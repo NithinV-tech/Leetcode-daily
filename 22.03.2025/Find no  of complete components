@@ -1,0 +1,65 @@
+class Solution {
+public:
+    int numcom = 0;
+    void dfs(int node,int deg,bool &flag,vector<int>&vis,vector<vector<int>>&adj,int &vc)
+    {
+       vis[node] = 1;
+       vc++;
+
+       if(deg != adj[node].size())
+       flag=0;
+       for(auto it:adj[node])
+       {
+       if(vis[it]==0)
+       dfs(it,deg,flag,vis,adj,vc);
+       }
+
+    }
+
+
+
+    int countCompleteComponents(int n, vector<vector<int>>& edges) 
+    {
+      int m = n;
+      vector<vector<int>>adj(n);
+      vector<int>vis(n,0);
+      vector<int>indeg(n,0);
+      bool flag=1;
+      int vc=0;
+
+      for(auto it:edges)
+      {
+         
+         int u = it[0];
+         int v = it[1];
+         adj[u].push_back(v);
+         indeg[u]++;
+         adj[v].push_back(u);
+         indeg[v]++;
+        
+      }
+    =
+
+      for(int i=0;i<n;i++)
+      {
+           
+           if(vis[i] == 0)
+           {
+           dfs(i,indeg[i],flag,vis,adj,vc);
+
+           if(flag==1 && vc == indeg[i]+1)
+           {
+           numcom++;
+            vc=0;
+           }
+           else if(flag == 0)
+           flag=1;
+            vc=0;
+           }
+
+      }
+
+     return numcom;
+
+    }
+};
